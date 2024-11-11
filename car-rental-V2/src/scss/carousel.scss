@@ -1,0 +1,106 @@
+.wrapper {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% / 4) - 1em);
+
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 20px;
+
+    border-radius: 20px;
+
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    animation: 2.5s anim-lineUp ease;
+
+    .carousel {
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        :where(.card, .img) {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .no-transition {
+            scroll-behavior: auto;
+        }
+
+        .dragging,
+        .card {
+            cursor: grab;
+            user-select: none;
+        }
+
+        .card {
+            scroll-snap-align: start;
+            background-color: #111119;
+            width: 18em;
+            border-radius: 20px;
+            flex-direction: column;
+            padding-bottom: 10px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.23);
+            list-style: none;
+            cursor: pointer;
+
+            .img, 
+            img {
+                border-radius: 20px;
+            }
+        }
+    }
+
+    @keyframes anim-lineUp {
+        0% {
+          opacity: 0;
+          transform: translateY(80%);
+        }
+        20% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+          transform: translateY(0%);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0%);
+        }
+      }
+
+    @media screen and (max-width: 900px) {
+        .wrapper {
+            .carousel {
+              grid-auto-columns: calc((100% / 2) - 9px);
+            }
+        } 
+    }
+
+    @media screen and (max-width: 600px) {
+        .wrapper {
+            margin-left: 30px;
+            .carousel {
+              grid-auto-columns: 100%;
+            }  
+        }
+        .removePad{
+          padding: 0px !important;
+        }
+    }
+
+    @media  screen and (max-width: 1300px) {
+        .para {
+          text-align: center;
+        }
+        .infoBTN {
+          padding: 8px 50px;
+        }
+        .carousel {
+            &:where(.card, .img) {
+              justify-content: space-around;
+            }
+        } 
+    }
+}
