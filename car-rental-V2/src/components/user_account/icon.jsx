@@ -18,8 +18,8 @@ export function Icon() {
       const idToken = await user.getIdToken();
 
       const response = await fetch(
-        // "https://car-rental-back.onrender.com/api/google-auth",
-        "http://localhost:5000/api/google-auth",
+        "https://car-rental-back.onrender.com/api/google-auth",
+        // "http://localhost:5000/api/google-auth",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
