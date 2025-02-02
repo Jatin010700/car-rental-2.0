@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Icon } from "../../extra/icon";
 
 export const Footer = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -16,6 +15,14 @@ export const Footer = () => {
 
     return () => clearInterval(interValid);
   }, []);
+
+  const iconList = [
+    <i key="google" className="bi bi-google"></i>,
+    <i key="facebook" className="bi bi-facebook"></i>,
+    <i key="microsoft" className="bi bi-microsoft"></i>,
+    <i key="twitter" className="bi bi-twitter"></i>,
+    <i key="instagram" className="bi bi-instagram"></i>,
+  ];
 
   return (
     <div className="bg-white">
@@ -35,7 +42,13 @@ export const Footer = () => {
         <div className="flex items-center p-4">
           <h2 className="font-bold text-2xl text-yellow mr-2">Follow Us: </h2>
           <div className="flex items-center gap-2">
-            <Icon />
+          {iconList.map((icon, index) => (
+              <div
+                key={index}
+                className="transition ease-in-out hover:scale-105 duration-150 cursor-pointer iconStyle">
+                {icon}
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
-          
+
           <Route path="/" element={<Home />} />
           <Route path="/info1/:carName/:imageURL/:price/:rent/:loginUserName" element={<Info1 />}/>
           <Route path="/contact" element={<Contact />} />
@@ -34,14 +34,14 @@ function App() {
 
           <Route path="/carcontent"
           element={<PrivateRoute element={CarOwner} />}/>
-          <Route path="/forgotPass" 
+          <Route path="/forgotPass"
           element={<PrivateRoute element={ForgotPass} />}/>
           <Route path="/ConfirmEmail" element={<ConfirmEmail/>}/>
 
           <Route path="*" element={<Error />} />
           <Route path="/soon" element={<Soon />} />
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
-         
+
         </Routes>
       </AuthProvider>
     </Router>

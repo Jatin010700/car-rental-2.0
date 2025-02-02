@@ -10,6 +10,25 @@ body {
   background: radial-gradient(circle, rgba(61,61,61,1) 0%, rgba(25,25,25,1) 100%);
 }
 
+/* Webkit browsers (Chrome, Safari) */
+/* ::-webkit-scrollbar {
+  display: none; 
+  width: 8px;  Width of the scrollbar
+}*/
+
+/* ::-webkit-scrollbar-track {
+  background-color: #212529;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ff3333; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #ff3333; 
+} */
+
 @layer components {
   .NavBTN {
     @apply p-2 bg-yellow rounded-full font-bold hover:bg-L-black hover:text-yellow transition ease-in-out active:scale-95 hover:scale-105 duration-150
@@ -25,5 +44,9 @@ body {
   }
   .register_or_logIn_btn {
     @apply w-80 lg:w-2/4 bg-L-black text-yellow hover:bg-L-black hover:text-yellow py-2 px-4 rounded-full font-bold border-2 border-yellow hover:border-yellow transition ease-in-out active:scale-95 hover:scale-105 duration-150
+  }
+
+  .yellowBTN {
+    @apply text-L-black bg-yellow rounded-full py-2 px-4 w-full text-center font-bold active:scale-95 hover:scale-105 duration-150
   }
 }

@@ -1,8 +1,9 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { NavBar } from "../../navbar/navbar";
 import { Footer } from "../../main_page/footer";
 import { dotPulse } from "ldrs";
 import { useSelector } from "react-redux";
+import Masonry from "react-masonry-css";
 dotPulse.register();
 
 export const CarOwner = () => {
@@ -10,13 +11,13 @@ export const CarOwner = () => {
   const [carName, setCarName] = useState("");
   const [price, setPrice] = useState(0);
   const [rent, setRent] = useState(0);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
   let [paraValue, setParaValue] = useState("");
   let [success, setSuccess] = useState("");
   const userName = useSelector((state) => state.userName);
-  
+
   const handleImageChange = (e) => {
     const selectedImages = e.target.files;
     setImage([...image, ...Array.from(selectedImages)]);
@@ -36,12 +37,15 @@ export const CarOwner = () => {
         formData.append("images", image[i]);
       }
 
-      const res = await fetch("https://car-rental-back.onrender.com/api/owner-data", {
-        method: "POST",
-        body: formData,
-        // headers: {
-        //   "Authorization": `Bearer ${token}`, // Include the JWT token in the headers
-        // },
+      const res = await fetch(
+        "https://car-rental-back.onrender.com/api/owner-data",
+        // "http://localhost:5000/api/owner-data",
+        {
+          method: "POST",
+          body: formData,
+          // headers: {
+          //   "Authorization": `Bearer ${token}`, // Include the JWT token in the headers
+          // },
       });
 
       if (res.status === 200) {
@@ -79,7 +83,7 @@ export const CarOwner = () => {
   };
 
   const isFormValid = () => {
-    return image === ([]) || carName === ""
+    return image == [] || carName === ""
     || price === 0 || rent === 0;
   };
 
@@ -91,25 +95,33 @@ export const CarOwner = () => {
     setPrice(0);
     setRent(0);
   };
-  
+
+    const breakpointColumnsObj = {
+      default: 3,
+      768: 2,
+      480: 1,
+    };
+
   return (
     <>
       <NavBar />
-      <div className="bg-white w-full py-10 px-16">
-        <h1 className="font-bold text-4xl pb-10">
+      <div className="bg-white w-full py-10 px-8 md:px-16">
+        <h1 className="font-bold text-4xl pb-8">
           <span className="underline decoration-yellow">Put yo</span>ur car for sell
         </h1>
         <div className="flex gap-2 flex-col sm:flex-row">
           <form
             onSubmit={handleSubmit}
             className="rounded-2xl shadow p-4 mt-2 w-full sm:w-4/6 md:w-2/6 bg-L-black text-white flex flex-col gap-2">
-            <h1 className="text-center uppercase font-bold pb-2 text-2xl">
-              {userName}
-            </h1>
-            <p className="text-center underline decoration-yellow">Upload details about your Car on our site</p>
-            <p className={`text-center font-bold text-white ${success ? "success" : "error"}`}>
-              {paraValue}
-            </p>
+            <div className="relative flex flex-col justify-center items-center">
+              <h1 className="text-center uppercase font-bold pb-2 text-2xl">
+                {userName}
+              </h1>
+              <p className={`absolute w-80 lg:w-full top-[5.5rem] lg:top-7 text-center font-bold text-white ${success ? "success" : "error"}`}>
+                {paraValue}
+              </p>
+            </div>
+            <p className="text-center underline decoration-yellow">Upload car details on our site.</p>
             <div className="file-upload">
               <label
                 htmlFor="fileInput"
@@ -165,11 +177,10 @@ export const CarOwner = () => {
               <span className="text-yellow font-bold text-base">Note: </span>
               Please refresh form if any mistake were made!!
             </p>
-            
             <div className="flex justify-center gap-2">
             <button
               type="submit"
-              className="py-2 px-2 w-full sm:w-1/4 mt-2 bg-yellow text-L-black hover:bg-yellow hover:text-L-black
+              className="py-2 px-2 w-full sm:w-2/4 mt-2 bg-yellow text-L-black hover:bg-yellow hover:text-L-black
               rounded-full font-bold transition ease-in-out active:scale-95 hover:scale-105 duration-150 btn"
               disabled={isFormValid()}
               onClick={handleSubmit}>
@@ -177,28 +188,28 @@ export const CarOwner = () => {
             </button>
             <button
               type="button"
-              className="py-2 px-2 w-full sm:w-1/4 mt-2 bg-yellow text-L-black
+              className="py-2 px-2 w-full sm:w-2/4 mt-2 bg-yellow text-L-black
                           rounded-full font-bold transition ease-in-out active:scale-95 hover:scale-105 duration-150"
               onClick={refreshForm}>
               Refresh
             </button>
           </div>
         </form>
-
           {image.length > 0 && (
-            <div className="w-4/6 h-[200px]">
-              <div className="flex flex-wrap h-[250%] overflow-auto">
-                {image.map((image, index) => (
-                  <div key={index} className="w-full sm:w-3/6 md:w-2/6 p-2">
-                    <img
-                      src={URL.createObjectURL(image)}
-                      alt={`Selected ${index}`}
-                      className="rounded-2xl"
-                    />
-                  </div>
-                ))}
+          <Masonry
+            breakpointCols={breakpointColumnsObj}
+            className="flex gap-2 w-full md:w-4/6 h-[510px] overflow-auto removeScroll"
+            columnClassName="masonry-column">
+            {image.map((image, index) => (
+              <div key={index}>
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt={`Selected ${index}`}
+                  className="rounded-2xl w-full h-auto object-cover mt-2"
+                />
               </div>
-            </div>
+            ))}
+          </Masonry>
           )}
         </div>
       </div>

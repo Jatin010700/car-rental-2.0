@@ -30,9 +30,9 @@ export const NumberPages = ({ currentPage, totalPages, onPageChange }) => {
       <div className="flex justify-center gap-2 px-4 pb-4">
         <div
           className={`cursor-pointer bg-yellow rounded-full w-11 text-center active:scale-95 transition ease-in-out hover:scale-105 duration-150 ${
-            currentPage > 1 ? "cursor-pointer" : ""
+            currentPage > 1 ? "cursor-pointer" : "opacity-0"
           }`}
-          onClick={handleSlideLeft}> 
+          onClick={handleSlideLeft}>
           <i className="text-L-black relative top-2 text-xl bi bi-caret-left-fill"></i>
         </div>
         {Array.from({ length: Math.min(3, totalPages) }, (_, index) => (
@@ -47,7 +47,7 @@ export const NumberPages = ({ currentPage, totalPages, onPageChange }) => {
         ))}
         <div
           className={`bg-yellow rounded-full w-11 text-center active:scale-95 transition ease-in-out hover:scale-105 duration-150 ${
-            currentPage < totalPages ? "cursor-pointer" : ""
+            currentPage < totalPages ? "cursor-pointer" : "opacity-0"
           }`}
           onClick={handleSlideRight}>
           <i className="text-L-black relative top-2 text-xl bi bi-caret-right-fill"></i>

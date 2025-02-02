@@ -13,15 +13,18 @@ export const ProfileMenu = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("https://car-rental-back.onrender.com/logout", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const res = await fetch(
+        "https://car-rental-back.onrender.com/logout",
+        // "http://localhost:5000/logout",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
       });
 
-      if (res.ok) {
+      if (res.status === 200) {
         const data = await res.json();
         alert(data.message);
         localStorage.removeItem("token");
@@ -31,10 +34,10 @@ export const ProfileMenu = () => {
         alert("Logout failed:", res.statusText);
       }
     } catch (error) {
-      alert("Server Error!!!", error);
+      console.error("SERVER ERROR:", error);
     }
   };
-  
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -67,15 +70,15 @@ export const ProfileMenu = () => {
                     Settings
                   </li>
                 <button
-                  className="py-2 px-14 bg-yellow rounded-full font-bold hover:bg-L-black hover:text-yellow shadow transition ease-in-out active:scale-95 hover:scale-105 duration-150"
+                  className="py-2 px-14 bg-yellow rounded-full font-bold hover:bg-L-black hover:text-yellow shadow active:scale-95 duration-150"
                   onClick={handleLogout}>
-                  <i class="bi bi-arrow-left-circle-fill"></i> LOG OUT
+                  <i className="bi bi-arrow-left-circle-fill"></i> LOG OUT
                 </button>
               </ul>
             </div>
           </div>
         </div>
-        )}
-      </div>
+      )}
+    </div>
   );
 };

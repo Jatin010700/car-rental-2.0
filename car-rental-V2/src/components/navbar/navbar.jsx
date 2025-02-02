@@ -13,7 +13,7 @@ export const NavBar = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("https://car-rental-back.onrender.com/logout", {
+      const response = await fetch("https://car-rental-back.onrender.com/logout", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -21,14 +21,14 @@ export const NavBar = () => {
         },
       });
 
-      if (res.ok) {
-        const data = await res.json();
+      if (response.status === 200) {
+        const data = await response.json();
         alert(data.message);
         localStorage.removeItem("token");
         dispatch(logout());
         navigate("/");
       } else {
-        alert("Logout failed:", res.statusText);
+        alert("Logout failed:", response.statusText);
       }
     } catch (error) {
       alert("Server Error!!!", error);

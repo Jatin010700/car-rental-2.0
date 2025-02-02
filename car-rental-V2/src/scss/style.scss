@@ -1,14 +1,14 @@
 body {
-    .success{
+    .success {
         background-color: #4BB543;
         border-radius: 100px;
-        margin: 5px;
       }
-    .error{
+
+    .error {
         background-color: #ff3333;
         border-radius: 100px;
-        margin: 5px;
     }
+
     .iconStyle {
         background-color: white;
         border: 2px solid #febd00;
@@ -30,12 +30,29 @@ body {
       color: #111119;
     }
 
-      @media only screen and (max-width: 1024px) {
-        .divContent{
-          display: none;
-        }
-        .main-header{
-            display: none;
-          }
+    .removeScroll {
+      &::-webkit-scrollbar {
+        display: none;
       }
+    }
+
+    @media only screen and (max-width: 1024px) {
+      body {
+        background-color: white!important;
+      }
+
+      .divContent {
+        display: none;
+      }
+
+      .main-header {
+        display: none;
+      }
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+  body {
+    background: white!important;
+  }
 }

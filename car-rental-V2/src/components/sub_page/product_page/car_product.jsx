@@ -1,27 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { NavBar } from "../../navbar/navbar";
 import { Footer } from "../../main_page/footer";
 import { NumberPages } from "./number_of_page";
 import { Link } from "react-router-dom";
 import { Preloader } from "../../../extra/preloader";
 
-const ListOfCar = ({
-  currentOwner,
-  name,
-  image,
-  info,
-  rent,
-  icon,
-  link,
-  link1,
-  searchQuery,
-  isLoading,
-}) => {
-  const filteredCars = name.toLowerCase().includes(searchQuery.toLowerCase());
-
-  if (!filteredCars) {
-    return null;
-  }
+const ListOfCar = ({ carData, isLoading }) => {
+  const { name, image, info, rent, currentOwner, icon, link, link1 } = carData;
 
   return (
     <>
@@ -29,21 +14,18 @@ const ListOfCar = ({
         <Preloader className="flex justify-center items-center" />
       ) : (
         <>
-          <p className="text-4xl mb-4 font-bold text-yellow text-uppercase">
+          <p className="text-3xl mb-4 font-bold text-yellow text-uppercase">
             {name}
           </p>
-
-          <div className="">{image}</div>
-
+          <div>{image}</div>
           <p className="py-2 text-lg font-bold">
-            Current Owner:
-            <span className="text-2xl uppercase text-yellow">
+            Current Owner : <span className="text-2xl uppercase text-yellow">
               {currentOwner}
             </span>
           </p>
           <div className="w-full ">
             <div className="flex items-center">
-              <h2 className=" text-xl">Price :</h2>
+              <h2 className=" text-xl font-bold">Price :</h2>
               <p className="ml-2">{info}</p>
             </div>
             <div className="flex items-center">
@@ -58,14 +40,10 @@ const ListOfCar = ({
             </div>
 
             <div className="flex gap-2 justify-center">
-              <Link
-                className="text-L-black bg-yellow rounded-full py-2 px-4 md:px-12 font-bold active:scale-95 transition ease-in-out hover:scale-110 duration-150"
-                to={link}>
+              <Link className="yellowBTN" to={link}>
                 Rent Now
               </Link>
-              <Link
-                className="text-L-black bg-yellow rounded-full py-2 px-4 md:px-12 font-bold active:scale-95 transition ease-in-out hover:scale-105 duration-150"
-                to={link1}>
+              <Link className="yellowBTN" to={link1}>
                 More Info
               </Link>
             </div>
@@ -81,7 +59,7 @@ export const SearchCar = () => {
   const [carListings, setCarListings] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const carsPerPage = 6;
 
   useEffect(() => {
@@ -90,16 +68,17 @@ export const SearchCar = () => {
     const fetchCarListings = async () => {
       try {
         const response = await fetch(
+          // 'http://localhost:5000/api/car-data'
           "https://car-rental-back.onrender.com/api/car-data"
         );
-        if (response.ok) {
+        if (response.status === 200) {
           const data = await response.json();
           setCarListings(data);
         } else {
-          console.error("Failed to fetch car lists");
+          console.error("Failed to fetch car data");
         }
       } catch (error) {
-        console.error("Error during fetch:", error);
+        console.error("SERVER ERROR:", error);
       } finally {
         setIsLoading(false);
       }
@@ -108,22 +87,16 @@ export const SearchCar = () => {
     fetchCarListings();
   }, [searchQuery]);
 
-  const mappedCarListings = carListings.map((listing, id) => ({
+  const mappedCarListings = carListings.map((listing) => ({
     title: listing.owner_car_name,
-    image: (
-      <img
-        src={JSON.parse(listing.owner_image_url)[0]}
-        alt=""
-        className=" rounded-xl"
-      />
-    ),
+    image: (<img src={JSON.parse(listing.owner_image_url)[0]} alt="" className="rounded-xl"/>),
     currentOwner: listing.login_user_name,
     info: `$${parseFloat(listing.owner_car_price).toLocaleString()}`,
     rent: `$${parseFloat(listing.owner_car_rent).toLocaleString()}/month`,
     icon: [
       <i className="bi bi-speedometer"></i>,
-      <i class="bi bi-fuel-pump-fill"></i>,
-      <i class="bi bi-signpost-fill"></i>,
+      <i className="bi bi-fuel-pump-fill"></i>,
+      <i className="bi bi-signpost-fill"></i>,
     ],
     link: ``,
     link1: `/info1/${encodeURIComponent(listing.owner_car_name)}
@@ -133,9 +106,11 @@ export const SearchCar = () => {
     /${encodeURIComponent(listing.login_user_name)}`
   }));
 
-  const filteredCars = mappedCarListings.filter((car) =>
-    car.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredCars = useMemo(() => {
+    return mappedCarListings.filter((car) =>
+      car.title.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  }, [searchQuery, carListings]);
 
   const indexOfLastCar = currentPage * carsPerPage;
   const indexOfFirstCar = indexOfLastCar - carsPerPage;
@@ -183,13 +158,7 @@ export const SearchCar = () => {
                 className="flex flex-col bg-L-black text-white p-4 mb-4 rounded-2xl border-2 border-L-black">
                 <ListOfCar
                   key={index}
-                  name={car.title}
-                  image={car.image}
-                  currentOwner={car.currentOwner}
-                  info={car.info}
-                  rent={car.rent}
-                  icon={car.icon}
-                  link1={car.link1}
+                  carData={car}
                   searchQuery={searchQuery}
                   isLoading={isLoading}
                 />
@@ -200,7 +169,7 @@ export const SearchCar = () => {
           <div className="flex items-center justify-center h-80">
             <div className="flex flex-col w-full bg-L-black text-white p-4">
               <p className="text-2xl font-bold text-center">
-                <i class="bi bi-x-circle"></i> CAR NOT FOUND !
+                <i className="bi bi-x-circle"></i> CAR NOT FOUND !
               </p>
             </div>
           </div>

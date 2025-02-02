@@ -2,23 +2,23 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/user_action/action";
 import { Link, useNavigate } from "react-router-dom";
-import { Icon } from "../../extra/icon";
+import { Icon } from "./icon";
 import { Preloader } from "../../extra/preloader";
 import { setUsernameState } from "../../redux/store/store";
 import { useAuth } from "../../extra/authContext";
 
 export default function LogIn() {
-    const [userValue, setUserValue] = useState("");
-    const [passValue, setPassValue] = useState("");
-    const [emailValue, setEmailValue] = useState("");
-    let [paraValue, setParaValue] = useState("");
-    let [success, setSuccess] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [userValue, setUserValue] = useState("");
+  const [passValue, setPassValue] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+  let [paraValue, setParaValue] = useState("");
+  let [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
-    const { handleLogin } = useAuth();
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const { handleLogin } = useAuth();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,18 +26,20 @@ export default function LogIn() {
     try {
       setIsLoading(true);
       setSuccess(true);
-      const response = await fetch("https://car-rental-back.onrender.com/api/login", {
-        // https://car-rental-back.onrender.com/login
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: userValue,
-          password: passValue,
-          email: emailValue,
-        }),
-        credentials: "include",
+      const response = await fetch(
+        "https://car-rental-back.onrender.com/api/login",
+        // "http://localhost:5000/api/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: userValue,
+            password: passValue,
+            email: emailValue,
+          }),
+          credentials: "include",
       });
 
       if (response.ok) {
@@ -70,7 +72,7 @@ export default function LogIn() {
         setIsLoading(false);
       }
     } catch (error) {
-      alert("An error occurred during login.");
+      alert("SERVER ERROR:", error);
     }
   };
 
@@ -97,19 +99,20 @@ export default function LogIn() {
         className="flex justify-center lg:w-3/4 gap-2 md:mt-24 rounded-2xl">
         <form
           id="login-form"
-          className="flex flex-col justify-center w-screen md:w-full text-center bg-white p-4 md:rounded-2xl h-screen md:h-full"
+          className="flex flex-col justify-center w-full text-center bg-white p-4 md:rounded-2xl h-screen md:h-full"
           onSubmit={handleSubmit}>
-          <Link
-            className="text-L-black text-5xl text-center font-bold transition ease-in-out hover:scale-105 duration-150 mb-4 lg:hidden "
-            to={"/"}>
-            <span className="text-yellow">Car </span>
-            <i className=" bi bi-car-front-fill"></i> Rental
-          </Link>
-          <p className={`text-center font-bold text-white ${success ? "success" : "error"}`}>
-            {paraValue}
-          </p>
-
-          <h2 className="text-yellow text-4xl font-bold">LOG IN</h2>
+          <div className="relative flex flex-col justify-center items-center">
+            <Link
+              className="text-L-black text-5xl text-center font-bold mb-4 lg:hidden "
+              to={"/"}>
+              <span className="text-yellow">Car </span>
+              <i className=" bi bi-car-front-fill"></i> Rental
+            </Link>
+            <h2 className="text-yellow text-4xl font-bold">LOG IN</h2>
+            <p className={`absolute w-80 lg:w-full top-[5.5rem] lg:top-9 text-center font-bold text-white ${success ? "success" : "error"}`}>
+              {paraValue}
+            </p>
+          </div>
           <div className="mt-4 input-field">
             <input
               type="text"
@@ -150,7 +153,7 @@ export default function LogIn() {
           </div>
 
           <Link
-            className="flex justify-left lg:ml-0 ml-6 mt-2 mb-2 text-sm hover:text-yellow font-bold"
+            className="text-left w-2/5 lg:ml-0 mb-2 text-sm hover:text-yellow font-bold"
             to="/ConfirmEmail">
             Forgot Password?
           </Link>
@@ -193,7 +196,7 @@ export default function LogIn() {
               to={"/"}>
               CAR <i className="bi bi-car-front-fill"></i> RENTAL
             </Link>
-            <p className="text-white p-4">
+            <p className="text-white p-2 pt-4">
               Welcome to our car rental website! We offer a wide range of
               vehicles and flexible rental options to suit your needs. With
               exceptional customer service and affordable rates, we make renting
@@ -208,7 +211,7 @@ export default function LogIn() {
               Don't have an Account? <span className="text-yellow font-bold"> SIGN UP</span>
             </p>
 
-            <p className="text-white mt-10"><span className="text-yellow">*</span>Use this Account: Test, test@test,  123</p>
+            <p className="text-white mt-2"><span className="text-yellow">*</span>USE THIS ACCOUNT: Test, test@test,  123</p>
           </div>
         </div>
       </div>

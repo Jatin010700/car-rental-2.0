@@ -17,7 +17,7 @@ const ListOfcar = ({ image, title, para, link }) => {
           <div className="flex flex-wrap gap-2 p-2">
             <Link to={link} className="bg-yellow rounded-full py-2 px-20 font-bold transition ease-in-out active:scale-95 hover:scale-105 duration-150 infoBTN">
               More Info
-            </Link> 
+            </Link>
           </div>
         </li>
       </ul>
@@ -33,19 +33,21 @@ const AdvancedCarousel = () => {
   useEffect(() => {
     const fetchCarListings = async () => {
       try {
-        const response = await fetch('https://car-rental-back.onrender.com/api/car-data');
-        // https://car-rental-back.onrender.com/
-        if (response.ok) {
+        const response = await fetch(
+          // 'http://localhost:5000/api/car-data'
+          'https://car-rental-back.onrender.com/api/car-data'
+        );
+        if (response.status === 200) {
           const data = await response.json();
           setCarListings(data);
         } else {
           console.error('Failed to fetch car lists');
         }
       } catch (error) {
-        console.error('Error during fetch:', error);
-      } 
+        console.error('SERVER ERROR:', error);
+      }
       finally {
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     };
 
@@ -71,24 +73,23 @@ const AdvancedCarousel = () => {
         <span className="underline decoration-yellow">Cars F</span>or Rent
       </h2>
 
-      <ul 
+      <ul
         ref={scrollRef}
         style={{
           display: "flex",
           overflow: "hidden",
           scrollSnapType: "x mandatory",
-        }}
-      >
+        }}>
         {mappedCarListings.map((car, index) => (
-          <Link key={index} to={car.link}>
-            
+          <li key={index}>
+
           <ListOfcar
             image={car.image}
             title={car.title}
             para={car.para}
             link={car.link}
           />
-          </Link>
+          </li>
         ))}
       </ul>
 
