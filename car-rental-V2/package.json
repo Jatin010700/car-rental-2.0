@@ -41,5 +41,5 @@
     "tailwindcss": "^3.4.14",
     "vite": "^5.4.10"
   },
-  "proxy": "http://localhost:5000/"
+  "proxy": "https://server-vsap.onrender.com/"
 }

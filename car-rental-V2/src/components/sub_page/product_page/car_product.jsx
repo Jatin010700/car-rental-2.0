@@ -61,15 +61,22 @@ export const SearchCar = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const carsPerPage = 6;
-
+  const apiKey = import.meta.env.VITE_AUTH0_CLIENT_KEY
   useEffect(() => {
     setIsLoading(true);
     setCurrentPage(1);
     const fetchCarListings = async () => {
       try {
         const response = await fetch(
-          // 'http://localhost:5000/api/car-data'
-          "https://car-rental-back.onrender.com/api/car-data"
+          // 'http://localhost:5000/api/carData',
+          "https://server-vsap.onrender.com/api/carData",
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "x-api-key": apiKey,
+            },
+          }
         );
         if (response.status === 200) {
           const data = await response.json();
