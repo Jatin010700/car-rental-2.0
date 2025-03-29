@@ -10,7 +10,6 @@ import { useAuth } from "../../extra/authContext";
 export default function LogIn() {
   const [userValue, setUserValue] = useState("");
   const [passValue, setPassValue] = useState("");
-  const [emailValue, setEmailValue] = useState("");
   let [paraValue, setParaValue] = useState("");
   let [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -20,15 +19,17 @@ export default function LogIn() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const localUrl = import.meta.env.VITE_LOCAL_URL;
+  const baseUrl = window.location.hostname === "localhost" ? localUrl : apiUrl;
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       setIsLoading(true);
       setSuccess(true);
-      const response = await fetch(
-        "https://car-rental-back.onrender.com/api/login",
-        // "http://localhost:5000/api/login",
+      const response = await fetch(`${baseUrl}login`,
         {
           method: "POST",
           headers: {
@@ -37,7 +38,6 @@ export default function LogIn() {
           body: JSON.stringify({
             username: userValue,
             password: passValue,
-            email: emailValue,
           }),
           credentials: "include",
       });
@@ -123,19 +123,6 @@ export default function LogIn() {
               value={userValue}
               onChange={(e) => setUserValue(e.target.value)}
               required
-            />
-          </div>
-
-          <div className=" input-field">
-            <input
-              type="email"
-              id="email"
-              className="user_input"
-              placeholder="Email"
-              autoComplete="off"
-              required
-              value={emailValue}
-              onChange={(e) => setEmailValue(e.target.value)}
             />
           </div>
 
