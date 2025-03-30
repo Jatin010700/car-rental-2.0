@@ -1,58 +1,72 @@
+@use "./carousel";
+@use "./header";
+@use "./tailwind";
+@use './variables/var' as *;
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
 body {
-    .success {
-        background-color: #4BB543;
-        border-radius: 100px;
-      }
+  margin: 0;
+  font-family: $GlobalFontFamily;
+  background: radial-gradient(circle, rgba(61,61,61,1) 0%, rgba(25,25,25,1) 100%);
 
-    .error {
-        background-color: #ff3333;
-        border-radius: 100px;
+  .underline-rounded {
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 5px;
+      width: 100%;
+      height: 4px;
+      background-color: $yellow;
+      border-radius: 9999px;
+    }
+  }
+
+  .iconStyle {
+    background-color: $white;
+    border: 2px solid $yellow;
+    padding: 8px 12px;
+    border-radius: 100em;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+
+    &:hover {
+        transition: 0.2s;
+        background-color: $yellow;
+    }
+  }
+
+  .active {
+    color: $yellow;
+  }
+
+  .inactive {
+    color: $light-dark;
+  }
+
+  .removeScroll {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  @media only screen and (max-width: 1024px) {
+    body {
+      background-color: $white!important;
     }
 
-    .iconStyle {
-        background-color: white;
-        border: 2px solid #febd00;
-        padding: 8px 12px;
-        border-radius: 100em;
-        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
-
-        &:hover {
-            transition: 0.2s;
-            background-color: #febd00;
-        }
+    .divContent {
+      display: none;
     }
 
-    .active {
-      color: #febd00;
+    .main-header {
+      display: none;
     }
-
-    .inactive {
-      color: #111119;
-    }
-
-    .removeScroll {
-      &::-webkit-scrollbar {
-        display: none;
-      }
-    }
-
-    @media only screen and (max-width: 1024px) {
-      body {
-        background-color: white!important;
-      }
-
-      .divContent {
-        display: none;
-      }
-
-      .main-header {
-        display: none;
-      }
-    }
+  }
 }
 
 @media only screen and (max-width: 1024px) {
   body {
-    background: white!important;
+    background: $white!important;
   }
 }

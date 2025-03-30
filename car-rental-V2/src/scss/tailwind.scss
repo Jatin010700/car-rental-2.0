@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .navbBarBtn {
+    @apply p-2 bg-yellow rounded-full font-bold hover:bg-L-black hover:text-yellow transition ease-in-out active:scale-95 hover:scale-105 duration-150
+  }
+  .menuLinks {
+    @apply cursor-pointer rounded-full font-bold hover:text-yellow transition ease-in-out hover:scale-110
+  }
+  .carouselBTN {
+    @apply bg-yellow w-11 h-11 rounded-full active:scale-95 transition ease-in-out hover:scale-105 duration-150
+  }
+  .user_input{
+    @apply mb-2 bg-white py-2 px-4 rounded-3xl w-80 border-2 border-yellow
+  }
+  .userBtn {
+    @apply w-80 lg:w-2/4 bg-L-black text-yellow hover:bg-L-black hover:text-yellow py-2 px-4 rounded-full font-bold border-2 border-yellow hover:border-yellow transition ease-in-out active:scale-95 hover:scale-105 duration-150
+  }
+  .yellowBTN {
+    @apply text-L-black bg-yellow rounded-full py-2 px-4 w-full text-center font-bold active:scale-95 hover:scale-105 duration-150
+  }
+}
