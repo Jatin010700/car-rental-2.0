@@ -25,7 +25,3 @@ dist-ssr
 
 # .env file
 .env
-
-# Dependency directories
-variables
-config
