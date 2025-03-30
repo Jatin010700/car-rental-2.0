@@ -12,10 +12,15 @@ export const handleCarProduct = async () => {
       }
     );
 
-    const data = await response.json();
+    const responseData = await response.json();
 
+    if (!responseData.data) {
+      throw new Error("Invalid response format");
+    }
+
+    const decodedConfig = JSON.parse(atob(responseData.data));
     if (response.ok) {
-      return data;
+    return decodedConfig;
     } else {
       console.error('Failed to fetch data');
     }
@@ -27,6 +32,7 @@ export const handleCarProduct = async () => {
 export const handleUploadData = async ({ setIsLoading, userName, carName, price, rent, image, refreshForm }) => {
   const token = localStorage.getItem('token');
   const idToken = await user.getIdToken();
+
   try {
     setIsLoading(true)
     const formData = new FormData();

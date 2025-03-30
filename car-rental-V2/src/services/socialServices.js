@@ -13,8 +13,15 @@ export const handleFirebaseConfig = async () => {
         "x-api-key": apiKey,
       },
     });
-    const config = await response.json();
-    return config;
+
+    const responseData = await response.json();
+
+    if (!responseData.data) {
+      throw new Error("Invalid response format");
+    }
+
+    const decodedConfig = JSON.parse(atob(responseData.data));
+    return decodedConfig;
   } catch (error) {
     alert(error);
   }

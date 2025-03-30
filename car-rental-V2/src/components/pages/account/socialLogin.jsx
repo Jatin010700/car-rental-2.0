@@ -32,11 +32,11 @@ export default function SocialLogin() {
   }
 
   const iconList = [
-    <i key="google" className="bi bi-google" onClick={handleSubmit}></i>,
-    <i key="facebook" className="bi bi-facebook"></i>,
-    <i key="microsoft" className="bi bi-microsoft"></i>,
-    <i key="twitter" className="bi bi-twitter"></i>,
-    <i key="instagram" className="bi bi-instagram"></i>,
+    <i key="google" className="bi bi-google iconStyle" onClick={handleSubmit}></i>,
+    <i key="facebook" className="bi bi-facebook iconStyle"></i>,
+    <i key="microsoft" className="bi bi-microsoft iconStyle"></i>,
+    <i key="twitter" className="bi bi-twitter iconStyle"></i>,
+    <i key="instagram" className="bi bi-instagram iconStyle"></i>,
   ];
 
   return (
@@ -44,7 +44,7 @@ export default function SocialLogin() {
       {iconList.map((icon, index) => (
         <div
           key={index}
-          className="transition ease-in-out hover:scale-105 duration-150 cursor-pointer iconStyle">
+          className="transition ease-in-out active:scale-95 hover:scale-105 duration-150 cursor-pointer">
           {icon}
         </div>
       ))}
