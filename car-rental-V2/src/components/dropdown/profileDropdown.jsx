@@ -22,7 +22,7 @@ export const ProfileDropdown = ({ propOpen, propDropdown, propBackgroundDropdown
       {propOpen && (
         <div className="bg-L-black/75 h-[89vh] w-screen fixed bottom-0 left-0"
         onClick={propBackgroundDropdown}>
-        <div className="fixed top-0 right-0 mr-7 md:mr-16 mt-20 p-4 rounded-2xl h-auto w-80 md:w-64 bg-white border-2 border-r-L-black transition-all duration-300 ease-in-out"
+        <div className="fixed top-0 right-0 mr-8 md:mr-16 mt-20 p-4 rounded-2xl h-auto w-80 md:w-64 bg-white border-2 border-r-L-black transition-all duration-300 ease-in-out"
         onClick={(e) => e.stopPropagation()}>
           <div className="flex flex-col items-center gap-2">
             <h1 className="font-bold text-4xl">Account</h1>

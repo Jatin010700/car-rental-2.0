@@ -54,7 +54,7 @@ export const CarCarousel = () => {
     /${encodeURIComponent(listing.login_user_name)}`
   })).slice(0, 8);
   return (
-    <div className="bg-white px-4 md:!px-12 removePad">
+    <div className="bg-white px-8 md:!px-12 removePad">
       <h2 className="text-4xl font-bold text-center px-4 pt-4 pb-0 md:!pb-4">
         Cars For <span className="underline-rounded">Rent</span>
       </h2>
