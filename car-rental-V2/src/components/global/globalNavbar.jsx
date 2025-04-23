@@ -1,26 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { ProfileDropdown } from "../dropdown/profileDropdown";
 import { MobileNavMenu } from "../dropdown/mobileNavMenu";
+import useUserStore from "@/zustand_store/userStore";
 
 export const GlobalNavBar = () => {
-  const userLogin = useSelector((state) => state.userLogin);
   const location = useLocation();
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const { user } = useUserStore()
+  const isLoggedIn = !!user;
 
-  const toggleProfileMenu = (e) => {
-    e.stopPropagation();
-    setIsProfileOpen(!isProfileOpen);
-    setIsMobileNavOpen(false);
-  };
-
-  const toggleMobileNav = (e) => {
-    e.stopPropagation();
-    setIsMobileNavOpen(!isMobileNavOpen);
-    setIsProfileOpen(false);
-  };
 
   const NavButton = ({ to, text }) => (
     <Link to={to} className={`p-2 font-bold hover:text-yellow transition ease-in-out hover:scale-110
@@ -47,13 +35,9 @@ export const GlobalNavBar = () => {
         <NavButton to="/carlist" text="Rent Car"/>
         <NavButton to="/soon" text="About" />
         <NavButton to="/contact" text="Contact" />
-        {userLogin ? (
+        {isLoggedIn ? (
           <>
-            <ProfileDropdown
-              propOpen={isProfileOpen}
-              propDropdown={toggleProfileMenu}
-              propBackgroundDropdown={() => setIsProfileOpen(!isProfileOpen)}
-            />
+            <ProfileDropdown/>
           </>
         ) : (
           <>
@@ -68,13 +52,9 @@ export const GlobalNavBar = () => {
       </nav>
       {/* MOBILE NAVBAR */}
       <div className="flex justify-center items-center gap-2 md:hidden">
-      {userLogin ? (
+      {isLoggedIn ? (
         <>
-         <ProfileDropdown
-          propOpen={isProfileOpen}
-          propDropdown={toggleProfileMenu}
-          propBackgroundDropdown={() => setIsProfileOpen(!isProfileOpen)}
-        />
+         <ProfileDropdown />
         </>
         ) : (
         <>
@@ -83,11 +63,7 @@ export const GlobalNavBar = () => {
           </Link>
         </>
         )}
-        <MobileNavMenu
-          propOpen={isMobileNavOpen}
-          propDropdown={toggleMobileNav}
-          propBackgroundDropdown={() => setIsMobileNavOpen(!isMobileNavOpen)}
-        />
+        <MobileNavMenu />
       </div>
     </div>
   );

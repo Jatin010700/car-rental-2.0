@@ -1,6 +1,5 @@
-import { baseUrl, apiKey } from "@/config/apiUrlConfig";
 import toast from "react-hot-toast";
-import { login } from "@/redux/action";
+import { baseUrl, apiKey } from "@/config/apiUrlConfig";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
@@ -27,7 +26,7 @@ export const handleFirebaseConfig = async () => {
   }
 }
 
-export const handleGoogleLogin = async ({ navigate, dispatch, setUsernameState, firebaseConfig, handleLogin }) => {
+export const handleGoogleLogin = async ({ navigate, setUser, firebaseConfig, handleLogin }) => {
   if (!firebaseConfig) {
     toast.error("Firebase configuration not loaded yet.");
     return;
@@ -64,8 +63,7 @@ export const handleGoogleLogin = async ({ navigate, dispatch, setUsernameState, 
         email: user.email,
         token: idToken
       });
-      dispatch(setUsernameState(googleUsername));
-      dispatch(login());
+      setUser(googleUsername);
     } else {
       console.error("Google Auth failed:", response);
     }

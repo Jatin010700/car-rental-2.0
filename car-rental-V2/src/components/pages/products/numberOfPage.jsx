@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react"
 
 export const NumberPages = ({ currentPage, totalPages, onPageChange }) => {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -29,11 +30,11 @@ export const NumberPages = ({ currentPage, totalPages, onPageChange }) => {
     <div className="bg-white">
       <div className="flex justify-center gap-2 px-4 pb-4">
         <div
-          className={`cursor-pointer bg-yellow rounded-full w-11 text-center active:scale-95 transition ease-in-out hover:scale-105 duration-150 ${
+          className={`bg-yellow flex justify-center items-center rounded-full h-10 w-10 active:scale-95 transition ease-in-out hover:scale-105 duration-150 ${
             currentPage > 1 ? "cursor-pointer" : "opacity-0"
           }`}
           onClick={handleSlideLeft}>
-          <i className="text-L-black relative top-2 text-xl bi bi-caret-left-fill"></i>
+          <ArrowLeft className="h-5 w-5" />
         </div>
         {Array.from({ length: Math.min(3, totalPages) }, (_, index) => (
           <div
@@ -45,12 +46,13 @@ export const NumberPages = ({ currentPage, totalPages, onPageChange }) => {
             {slideIndex + index + 1}
           </div>
         ))}
+
         <div
-          className={`bg-yellow rounded-full w-11 text-center active:scale-95 transition ease-in-out hover:scale-105 duration-150 ${
+          className={`bg-yellow flex justify-center items-center rounded-full h-10 w-10 active:scale-95 transition ease-in-out hover:scale-105 duration-150 ${
             currentPage < totalPages ? "cursor-pointer" : "opacity-0"
           }`}
           onClick={handleSlideRight}>
-          <i className="text-L-black relative top-2 text-xl bi bi-caret-right-fill"></i>
+            <ArrowRight className="h-5 w-5" />
         </div>
       </div>
     </div>

@@ -165,7 +165,7 @@
    }
 
    .slider-page--right .slider-page__content {
-     background-image: url("/car4.jpg");
+     background-image: url("/empty-road.jpg");
      height: 80%;
     position: relative;
     top: 60px;
@@ -174,10 +174,13 @@
 
  .js-scrolling__page-3 {
    .slider-page--left .slider-page__content {
-     background-image: url("/car2.jpg");
+     background-image: url("/car-interior-design.jpg");
+     background-size: 90%;
+     background-repeat: no-repeat;
+     background-position: right;
      height: 80%;
-    position: relative;
-    top: 70px;
+     position: relative;
+     top: 0px;
    }
 
    .slider-page--right .slider-page__content {

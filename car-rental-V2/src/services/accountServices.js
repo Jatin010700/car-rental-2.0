@@ -1,20 +1,11 @@
 import { baseUrl } from "@/config/apiUrlConfig";
 import toast from "react-hot-toast";
-import { logout } from "@/redux/action";
+import useUserStore from "@/zustand_store/userStore";
 
 // LOGIN USER
-export const handleLogin = async ({
-  userValue,
-  passValue,
-  setIsLoading,
-  setUsernameState,
-  login,
-  handleLogin,
-  navigate,
-  dispatch, }) => {
+export const handleLogin = async ({ userValue, passValue, setIsLoading, setUser, userToken, navigate }) => {
   try {
     setIsLoading(true);
-
     const response = await fetch(`${baseUrl}login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -36,9 +27,8 @@ export const handleLogin = async ({
       }
 
       localStorage.setItem("token", token);
-      handleLogin(token);
-      dispatch(setUsernameState(userValue));
-      dispatch(login());
+      userToken(token);
+      setUser(userValue);
       setTimeout(() => {
         navigate("/");
       }, 2000);
@@ -57,12 +47,7 @@ export const handleLogin = async ({
 };
 
 // REGISTER USER
-export const handleRegister = async ({
-  userValue,
-  passValue,
-  emailValue,
-  setIsLoading,
-  navigate, }) => {
+export const handleRegister = async ({ userValue, passValue, emailValue, setIsLoading, navigate }) => {
   try {
     setIsLoading(true);
 
@@ -102,7 +87,7 @@ export const handleRegister = async ({
 }
 
 // LOGOUT
-export const handleLogout = async ({ navigate, dispatch, userName }) => {
+export const handleLogout = async ({ navigate, username }) => {
     try {
       const response = await fetch(`${baseUrl}logout`, {
           method: "POST",
@@ -115,12 +100,10 @@ export const handleLogout = async ({ navigate, dispatch, userName }) => {
       const data = await response.json();
 
       if (response.ok) {
-        toast(`Bye Bye ${userName}`);
+        toast(`Bye Bye ${username}`);
         localStorage.removeItem("token");
-        dispatch(logout());
-        setTimeout(() => {
-          navigate("/");
-        }, 2000);
+        useUserStore.getState().logout();
+        navigate("/");
       } else {
         console.error('Failed to logout');
       }

@@ -5,7 +5,7 @@ import { Preloader } from "@/components/common/preloader";
 import { handleCarProduct } from "@/services/productServices";
 
 const ListOfCar = ({ carData, isLoading }) => {
-  const { name, image, info, rent, currentOwner, icon, link, link1 } = carData;
+  const { image, info, rent, currentOwner, icon, link, link1 } = carData;
 
   return (
     <>
@@ -13,26 +13,23 @@ const ListOfCar = ({ carData, isLoading }) => {
         <Preloader className="flex justify-center items-center" />
       ) : (
         <>
-          <p className="text-3xl mb-4 font-bold text-yellow text-uppercase">
-            {name}
-          </p>
           <div>{image}</div>
-          <p className="py-2 text-lg font-bold">
-            Current Owner : <span className="text-2xl uppercase text-yellow">
+          <p className="py-2 font-bold">
+            Current Owner : <span className="text-lg uppercase text-yellow">
               {currentOwner}
             </span>
           </p>
           <div className="w-full ">
             <div className="flex items-center">
-              <h2 className=" text-xl font-bold">Price :</h2>
-              <p className="ml-2">{info}</p>
+              <h2 className="font-bold">Price :</h2>
+              <p className="ml-2 text-lg">{info}</p>
             </div>
             <div className="flex items-center">
-              <h2 className="font-bold text-xl">Rent price :</h2>
-              <p className="ml-2">{rent}</p>
+              <h2 className="font-bold">Rent price :</h2>
+              <p className="ml-2 text-lg">{rent}</p>
             </div>
             <div className="flex items-center">
-              <p className="font-bold text-xl">Specification :</p>
+              <p className="font-bold text-lg">Specification :</p>
               <div className="flex flex-wrap gap-2 text-yellow text-2xl p-2">
                 {icon.map((iconItem, index) => (
                   <i key={index} className={iconItem.props.className}></i>
@@ -61,7 +58,7 @@ export const CarProduct = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
-  const carsPerPage = 6;
+  const carsPerPage = 8;
 
   useEffect(() => {
     setIsLoading(true);
@@ -76,22 +73,22 @@ export const CarProduct = () => {
   }, [searchQuery]);
 
   const mappedCarListings = carListings.map((listing) => ({
-    title: listing.owner_car_name,
-    image: (<img src={JSON.parse(listing.owner_image_url)[0]} alt="" className="rounded-xl"/>),
-    currentOwner: listing.login_user_name,
-    info: `$${parseFloat(listing.owner_car_price).toLocaleString()}`,
-    rent: `$${parseFloat(listing.owner_car_rent).toLocaleString()}/month`,
+    title: listing.car_name,
+    image: (<img src={JSON.parse(listing.image_url)[0]} alt="" className="rounded-xl"/>),
+    currentOwner: listing.owner_user_name,
+    info: `$${parseFloat(listing.car_price).toLocaleString()}`,
+    rent: `$${parseFloat(listing.car_rent).toLocaleString()}/month`,
     icon: [
       <i className="bi bi-speedometer"></i>,
       <i className="bi bi-fuel-pump-fill"></i>,
       <i className="bi bi-signpost-fill"></i>,
     ],
     link: ``,
-    link1: `/productPage/${encodeURIComponent(listing.owner_car_name)}
-    /${encodeURIComponent(JSON.parse(listing.owner_image_url)[0])}
-    /${encodeURIComponent(parseFloat(listing.owner_car_price).toLocaleString())}
-    /${encodeURIComponent(parseFloat(listing.owner_car_rent).toLocaleString())}
-    /${encodeURIComponent(listing.login_user_name)}`
+    link1: `/productPage/${encodeURIComponent(listing.car_name)}
+    /${encodeURIComponent(JSON.parse(listing.image_url)[0])}
+    /${encodeURIComponent(parseFloat(listing.car_price).toLocaleString())}
+    /${encodeURIComponent(parseFloat(listing.car_rent).toLocaleString())}
+    /${encodeURIComponent(listing.owner_user_name)}`
   }));
 
   const filteredCars = useMemo(() => {
@@ -117,7 +114,6 @@ export const CarProduct = () => {
 
   return (
     <>
-      {/* <NavBar /> */}
       <div className="bg-white">
         <div className="pt-4 mr-5 flex justify-center">
           <i className="relative top-2 left-10 text-lg text-grey hover:text-yellow bi bi-search"></i>
@@ -139,28 +135,37 @@ export const CarProduct = () => {
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />
-        {currentCars.length > 0 ? (
-          <div className="px-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-            {currentCars.map((car, index) => (
-              <div className="flex flex-col bg-L-black text-white p-4 mb-4 rounded-2xl border-2 border-L-black"
-              key={index}>
-                <ListOfCar
-                  carData={car}
-                  searchQuery={searchQuery}
-                  isLoading={isLoading}
-                />
-              </div>
-            ))}
+
+      {isLoading ? (
+        <>
+        <div className="flex items-center justify-center h-72">
+            <Preloader size={75}/>
+        </div>
+        </>
+      ) : currentCars.length > 0 ? (
+        <div className="px-4 grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+        {currentCars.map((car, index) => (
+          <div className=" animate-pop-in flex flex-col bg-L-black text-white p-4 rounded-2xl border-2 border-L-black"
+          key={index}>
+            <ListOfCar
+              carData={car}
+              searchQuery={searchQuery}
+              isLoading={isLoading}
+            />
           </div>
-        ) : (
-          <div className="flex items-center justify-center h-80">
-            <div className="flex flex-col w-full bg-L-black text-white p-4">
-              <p className="text-2xl font-bold text-center">
-                <i className="bi bi-x-circle"></i> CAR NOT FOUND !
-              </p>
-            </div>
+        ))}
+      </div>
+      ) : (
+        <>
+        <div className="flex items-center justify-center h-80">
+          <div className="flex flex-col w-full bg-L-black text-white p-4">
+            <p className="text-2xl font-bold text-center">
+              NO CAR AVAILABLE
+            </p>
           </div>
-        )}
+        </div>
+        </>
+      )}
       </div>
       <NumberPages
         currentPage={currentPage}

@@ -1,13 +1,37 @@
-@use "./carousel";
 @use "./header";
 @use "./tailwind";
 @use './variables/var' as *;
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
 body {
   margin: 0;
   font-family: $GlobalFontFamily;
-  background: radial-gradient(circle, rgba(61,61,61,1) 0%, rgba(25,25,25,1) 100%);
+  background-color: white;
+  // background: radial-gradient(circle, rgba(61,61,61,1) 0%, rgba(25,25,25,1) 100%);
+
+  .customDropdown,
+  .customMobileDropdown {
+    position: fixed;
+    top: 24px!important;
+    right: -20px!important;
+    width: 16em;
+  }
 
   .underline-rounded {
     position: relative;
@@ -62,6 +86,24 @@ body {
     .main-header {
       display: none;
     }
+
+    .customDropdown {
+      width: 18em;
+      right: -50px !important;
+    }
+    .customMobileDropdown {
+      width: 18em;
+      right: -10px !important;
+    }
+  }
+
+  .animate-pop-in {
+    animation: pop-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .img,
+  img {
+    border-radius: 20px;
   }
 }
 

@@ -11,7 +11,8 @@ import PrivateRoute from "./auth/privateRoute";
 import { UnauthorizedPage } from "./errors/unauthorize";
 import { Error } from "./errors/404Error";
 
-import { CarOwner } from "./components/pages/owner_upload_data/upload_data";
+import { CarOwner } from "./components/pages/owner_data/uploadData";
+import { OwnerCarList } from "./components/pages/owner_data/ownerCarList";
 import { HomePage } from "./components/pages/homepage/homePage";
 import { ContactPage } from "./components/pages/contact/contactPage";
 import { CarProduct } from "./components/pages/products/carProduct";
@@ -29,6 +30,7 @@ function App() {
 
           <Route path="/productPage/:carName/:imageURL/:price/:rent/:loginUserName" element={<ProductPage />}/>
           <Route path="/carcontent" element={<PrivateRoute element={CarOwner} />}/>
+          <Route path="/ownerlist" element={<PrivateRoute element={OwnerCarList} />}/>
           <Route path="/forgotPass" element={<PrivateRoute element={ForgotPass} />}/>
           <Route path="/ConfirmEmail" element={<ConfirmEmail/>}/>
 

@@ -1,31 +1,40 @@
 import { useRef, useState } from "react";
+import { Upload } from 'lucide-react';
 import { dotPulse } from "ldrs";
-import { useSelector } from "react-redux";
 import Masonry from "react-masonry-css";
+
+import { Progress } from "@/components/ui/progress"
 import { handleUploadData } from "@/services/productServices";
+import useUserStore from "@/zustand_store/userStore";
 
 dotPulse.register();
 
 export const CarOwner = () => {
   const [image, setImage] = useState([]);
   const [carName, setCarName] = useState("");
-  const [price, setPrice] = useState(0);
-  const [rent, setRent] = useState(0);
+  const [price, setPrice] = useState("");
+  const [rent, setRent] = useState("");
   const [selectedFile] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
-  const userName = useSelector((state) => state.userName);
+
+  const { user } = useUserStore();
+  const username = user.name;
 
   const handleImageChange = (e) => {
     const selectedImages = e.target.files;
     setImage([...image, ...Array.from(selectedImages)]);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     handleUploadData({
+      setUploadProgress,
       setIsLoading,
       refreshForm,
-      userName,
+      username,
       carName,
       price,
       rent,
@@ -57,7 +66,7 @@ export const CarOwner = () => {
     <>
       <div className="bg-white w-full py-10 px-8 md:px-16">
         <h1 className="font-bold text-4xl pb-8">
-          <span className="underline decoration-yellow">Put yo</span>ur car for sell
+          Put your car <span className="underline-rounded">for sell</span>
         </h1>
         <div className="flex gap-2 flex-col sm:flex-row">
           <form
@@ -65,20 +74,21 @@ export const CarOwner = () => {
             className="rounded-2xl shadow p-4 mt-2 w-full sm:w-4/6 md:w-2/6 bg-L-black text-white flex flex-col gap-2">
             <div className="relative flex flex-col justify-center items-center">
               <h1 className="text-center uppercase font-bold pb-2 text-2xl">
-                {userName}
+                {username}
               </h1>
+              {isLoading && (
+                <Progress value={uploadProgress} className="transition-all duration-300" />
+              )}
             </div>
-            <p className="text-center underline decoration-yellow">Upload car details on our site.</p>
-            <div className="file-upload">
+
+            <div className="w-full">
               <label
                 htmlFor="fileInput"
-                className="custom-file-upload flex gap-2 items-center">
-                <i className="text-2xl bi bi-file-earmark-text-fill"></i>
-                Upload Image:
-                <span
-                  className="bg-white text-dark ml-2 py-2 px-4 rounded-lg cursor-pointer font-bold
-                             hover:bg-yellow transition ease-in-out active:scale-95 hover:scale-105 duration-150">
-                  {selectedFile ? selectedFile.name : "Choose File"}
+                className="flex items-center justify-between">
+                Upload Image
+                <span className="bg-white text-L-black py-2 cursor-pointer font-bold w-4/6 flex justify-center rounded-full
+                             hover:!bg-yellow transition ease-in-out active:scale-95 hover:scale-105 duration-150">
+                  {selectedFile ? selectedFile.name : <Upload />}
                 </span>
               </label>
               <input
@@ -91,34 +101,30 @@ export const CarOwner = () => {
                 onChange={handleImageChange}
               />
             </div>
-            <div className="flex flex-col">
-              <label>Car Name:</label>
-              <input
-                type="text"
-                value={carName}
-                className="text-L-black rounded-2xl p-2"
-                onChange={(e) => setCarName(e.target.value)}
-              />
-            </div>
 
-            <div className="flex flex-col">
-              <label>Full price:</label>
-              <input
-                type="number"
-                value={price}
-                className="text-L-black rounded-2xl p-2"
-                onChange={(e) => setPrice(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label>Rent price:</label>
-              <input
-                type="number"
-                value={rent}
-                className="text-L-black rounded-2xl p-2"
-                onChange={(e) => setRent(e.target.value)}
-              />
-            </div>
+            <input
+              type="text"
+              value={carName}
+              placeholder="Car title"
+              className="text-L-black rounded-full p-2"
+              onChange={(e) => setCarName(e.target.value)}
+            />
+
+            <input
+              type="number"
+              value={price}
+              placeholder="Full price"
+              className="text-L-black rounded-full p-2"
+              onChange={(e) => setPrice(e.target.value)}
+            />
+
+            <input
+              type="number"
+              value={rent}
+              placeholder="Rent price"
+              className="text-L-black rounded-full p-2"
+              onChange={(e) => setRent(e.target.value)}
+            />
 
             <p className="text-sm">
               <span className="text-yellow font-bold text-base">Note: </span>
@@ -142,10 +148,10 @@ export const CarOwner = () => {
             </button>
           </div>
         </form>
-          {image.length > 0 && (
+          {image.length > 0 ? (
           <Masonry
             breakpointCols={breakpointColumnsObj}
-            className="flex gap-2 w-full md:w-4/6 h-[510px] overflow-auto removeScroll"
+            className="flex gap-2 w-full md:w-4/6 h-[400px] overflow-auto removeScroll"
             columnClassName="masonry-column">
             {image.map((image, index) => (
               <div key={index}>
@@ -157,7 +163,16 @@ export const CarOwner = () => {
               </div>
             ))}
           </Masonry>
-          )}
+          ) :
+          <>
+          <div className="flex items-center justify-center w-[65%]">
+            <div className="flex flex-col w-full text-L-black p-4">
+              <p className="text-2xl font-bold text-center">
+                UPLOAD IMAGE
+              </p>
+            </div>
+          </div>
+          </>}
         </div>
       </div>
     </>

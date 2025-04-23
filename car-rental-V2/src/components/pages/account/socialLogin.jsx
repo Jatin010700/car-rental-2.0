@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setUsernameState } from "@/redux/store";
 import { useAuth } from '@/auth/authContext';
 import { handleGoogleLogin } from "@/services/socialServices";
 import { handleFirebaseConfig } from "@/services/socialServices";
+import useUserStore from "@/zustand_store/userStore";
 
 export default function SocialLogin() {
   const [firebaseConfig, setFirebaseConfig] = useState(null);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { setUser } = useUserStore();
   const { handleLogin } = useAuth();
 
   useEffect(() => {
@@ -24,9 +23,8 @@ export default function SocialLogin() {
   const handleSubmit = async () => {
     handleGoogleLogin({
       navigate,
-      dispatch,
+      setUser,
       firebaseConfig,
-      setUsernameState,
       handleLogin
     })
   }

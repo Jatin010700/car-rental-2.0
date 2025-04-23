@@ -13,7 +13,6 @@ export const ProductPage = () => {
             <img src={logo} alt="" className="" width={100} height={100} />
             <h2 className="font-bold text-2xl md:text-4xl">{carName}</h2>
           </div>
-          <h2 className="font-bold text-2xl hidden md:block"><span className="underline decoration-yellow">Rent</span> car</h2>
         </div>
 
         <div className="flex flex-col md:flex-row justify-center gap-2 bg-L-black w-full py-4 px-10 md:px-12">

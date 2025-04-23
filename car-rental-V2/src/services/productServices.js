@@ -29,48 +29,93 @@ export const handleCarProduct = async () => {
   }
 };
 
-export const handleUploadData = async ({ setIsLoading, userName, carName, price, rent, image, refreshForm }) => {
+export const handleUploadData = async ({ setUploadProgress, setIsLoading, username, carName, price, rent, image, refreshForm }) => {
   const token = localStorage.getItem('token');
-  const idToken = await user.getIdToken();
+  // const idToken = await user.getIdToken();
+
+  const formData = new FormData();
+  formData.append("username", username);
+  formData.append("carName", carName);
+  formData.append("price", price);
+  formData.append("rent", rent);
+  image.forEach((img) => formData.append("images", img));
 
   try {
-    setIsLoading(true)
-    const formData = new FormData();
-    formData.append("username", userName);
-    formData.append("carName", carName);
-    formData.append("price", price);
-    formData.append("rent", rent);
-    for (let i = 0; i < image.length; i++) {
-      formData.append("images", image[i]);
-    }
+    setIsLoading(true);
+
+    // Simulate stepped progress (25 → 50 → 75) before actual upload completes
+    setUploadProgress(25);
+    await new Promise((res) => setTimeout(res, 300));
+    setUploadProgress(50);
+    await new Promise((res) => setTimeout(res, 300));
+    setUploadProgress(75);
+    await new Promise((res) => setTimeout(res, 300));
 
     const response = await fetch(`${baseUrl}ownerData`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Authorization": `Bearer ${token || idToken}`,
-        },
-        body: formData,
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "include",
+      body: formData,
     });
-
-    if (!token || !idToken) return res.status(401).send('Access denied');
 
     const data = await response.json();
 
     if (response.ok) {
-      setIsLoading(false)
+      setUploadProgress(100);
       toast(data.message);
       refreshForm();
     } else {
-      toast("Fail to upload", {
-        style: {
-          background: "#ff3333",
-          color: "#111119"
-        },
+      toast("Failed to upload", {
+        style: { background: "#ff3333", color: "#111119" },
       });
-      setIsLoading(false)
     }
-  } catch (error) {
-    alert(error);
+  } catch (err) {
+    alert(err.message || "Upload error");
+  } finally {
+    setIsLoading(false);
+    setTimeout(() => setUploadProgress(0), 1000); // Reset progress after a short delay
   }
 }
+
+export const handleGetOwnerCarList = async ({username}) => {
+  try {
+    const res = await fetch(`${baseUrl}carData/${username}`, {
+      method: "GET",
+      credentials: "include",
+    });
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error("Failed to fetch cars:", err);
+  }
+}
+
+export const handleDeleteProduct = async ({ id, selectedCars, setSelectedCars, setCars }) => {
+    if (!selectedCars.includes(id)) {
+      toast("Please select car before deleting", {
+        style: { background: "#ff3333", color: "#111119" },
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch(`${baseUrl}carData/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        toast(data.message);
+        setCars((prev) => prev.filter((car) => car.id !== id));
+        setSelectedCars((prev) => prev.filter((i) => i !== id));
+      } else {
+        toast("Failed to delete", {
+          style: { background: "#ff3333", color: "#111119" },
+        });
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
